@@ -9,15 +9,25 @@ html, body, #root {
   height: 100%;
 }
 
+/* Make the page responsive and allow centering via flex on #root */
 body {
-  width: 1920px;
-  height: 1080px;
+  /* Remove fixed Tizen sizes so we can center responsively */
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Samsung Sharp Sans', Arial, 'Noto Sans', 'Helvetica Neue', sans-serif;
   background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(249,250,251,1));
   color: #111827;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Center the app within the viewport */
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
 }
 
 button {

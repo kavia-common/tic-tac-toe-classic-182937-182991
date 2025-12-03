@@ -13,8 +13,9 @@
 }
 
 .tv-app {
-  width: 1920px;
-  height: 1080px;
+  /* Make the shell responsive; actual centering handled by #root flex */
+  width: min(1920px, 100vw);
+  height: min(1080px, 100vh);
   display: flex;
   flex-direction: column;
   align-items: center;
