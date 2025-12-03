@@ -135,18 +135,26 @@
 }
 
 .cell-content {
-  font-size: clamp(48px, 10vw, 140px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
-  font-weight: 800;
-  color: var(--primary);
   transform: scale(0.9);
-  transition: transform 200ms ease, color 200ms ease, text-shadow 200ms ease;
-  text-shadow: 0 4px 14px rgba(37,99,235,0.2);
+  transition: transform 200ms ease, color 200ms ease, filter 200ms ease;
+  /* keep a subtle glow matching primary tone */
+  filter: drop-shadow(0 4px 14px rgba(37,99,235,0.2));
 }
 
+/* SVGs inside cells scale responsively to grid size */
+.cell .piece-svg {
+  width: clamp(48px, 10vw, 140px);
+  height: clamp(48px, 10vw, 140px);
+  display: block;
+}
+
+/* Color accent for O/Queen cells */
 .cell.o .cell-content {
-  color: #0ea5e9; /* sky-500 accent for O */
-  text-shadow: 0 4px 14px rgba(14,165,233,0.2);
+  filter: drop-shadow(0 4px 14px rgba(14,165,233,0.2));
 }
 
 .cell.filled .cell-content {

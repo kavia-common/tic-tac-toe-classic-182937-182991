@@ -33,6 +33,46 @@ function isBoardFull(board) {
   return board.every((c) => c !== EMPTY)
 }
 
+// Inline SVG icons (lightweight, no external deps)
+function KnightIcon({ title = 'Knight', className = '', color = 'currentColor' }) {
+  // Simplified chess knight SVG path
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 64 64"
+      role="img"
+      aria-label={title}
+      focusable="false"
+    >
+      <title>{title}</title>
+      <path
+        d="M20 54h28v4H16v-4l6-6v-8c0-4 3-7 7-7h3c2 0 4-2 4-4 0-5-9-10-9-16 0-5 4-9 9-9 6 0 10 5 10 11 0 3-1 6-3 8 3 1 5 4 5 7 0 5-4 9-9 9h-1c-2 0-3 1-3 3v7l-6 6z"
+        fill={color}
+      />
+    </svg>
+  )
+}
+
+function QueenIcon({ title = 'Queen', className = '', color = 'currentColor' }) {
+  // Simplified chess queen SVG path
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 64 64"
+      role="img"
+      aria-label={title}
+      focusable="false"
+    >
+      <title>{title}</title>
+      <path
+        d="M12 50c6-4 12-6 20-6s14 2 20 6l-2 8H14l-2-8zm40-26l-6-6-6 6-6-10-6 10-6-6-6 6 8 16h20l8-16z"
+        fill={color}
+      />
+      <rect x="18" y="58" width="28" height="4" fill={color} />
+    </svg>
+  )
+}
+
 // PUBLIC_INTERFACE
 function App() {
   /** This is the main Tic Tac Toe application component for Tizen web/React. */
@@ -50,9 +90,9 @@ function App() {
 
   const status = useMemo(() => {
     const result = calcWinner(board)
-    if (result) return `${result.winner} wins!`
+    if (result) return `${result.winner === X ? 'Knight' : 'Queen'} wins!`
     if (isBoardFull(board)) return 'Draw!'
-    return `Player ${current}'s turn`
+    return `Player ${current === X ? 'Knight' : 'Queen'}'s turn`
   }, [board, current])
 
   // Update ARIA live region without causing layout shift
@@ -134,7 +174,7 @@ function App() {
     const row = Math.floor(i / 3) + 1
     const col = (i % 3) + 1
     const val = board[i]
-    const content = val ? (val === X ? 'X' : 'O') : 'empty'
+    const content = val ? (val === X ? 'Knight' : 'Queen') : 'empty'
     return `Row ${row} Column ${col}, ${content}`
   }
 
@@ -151,7 +191,11 @@ function App() {
           <h1 className="title">Tic Tac Toe</h1>
           <div className="status" aria-live="off">
             <span className={badgeClass}>
-              {hasWinner ? 'Winner' : isDraw ? 'Draw' : `Player ${current}`}
+              {hasWinner
+                ? 'Winner'
+                : isDraw
+                ? 'Draw'
+                : `Player ${current === X ? 'Knight' : 'Queen'}`}
             </span>
             <span>{status}</span>
           </div>
@@ -184,6 +228,8 @@ function App() {
                 (isO ? ' o' : '') +
                 (filled ? ' filled' : '')
 
+              const iconColor = isX ? 'var(--primary)' : '#0ea5e9'
+
               return (
                 <button
                   key={i}
@@ -197,7 +243,23 @@ function App() {
                   onFocus={() => setFocusIndex(i)}
                   tabIndex={i === focusIndex ? 0 : -1}
                 >
-                  <span className="cell-content">{cell || ''}</span>
+                  <span className="cell-content" aria-hidden={filled ? 'true' : 'false'}>
+                    {cell === X ? (
+                      <KnightIcon
+                        title="Knight"
+                        className="piece-svg"
+                        color={iconColor}
+                      />
+                    ) : cell === O ? (
+                      <QueenIcon
+                        title="Queen"
+                        className="piece-svg"
+                        color={iconColor}
+                      />
+                    ) : (
+                      ''
+                    )}
+                  </span>
                 </button>
               )
             })}
